@@ -1,0 +1,45 @@
+version: '2.1'
+
+services:
+
+  db:
+    container_name: mysql_suttyread
+    image: mysql:5.7
+    restart: always
+    healthcheck:
+      test: ""
+      timeout: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: react
+    ports:
+      - 3306:3306
+
+  server:
+    image: server
+    build: server
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '9000:9000'
+    expose:
+      - '9000'
+
+  client:
+    image: client
+    build: client
+    restart: always
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
+
+
+
+
+
+
+
+
